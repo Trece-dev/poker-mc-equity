@@ -50,7 +50,7 @@ st.markdown(f"""
 
 T = {
     "ES": {
-        "title": "🃏 Poker Equity Pro", "ht": "🟩 Tu Mano", "bt": "🟦 Mesa (Comunitarias)",
+        "title": "🃏 Calculadora Pro de Poker", "ht": "🟩 Tu Mano", "bt": "🟦 Mesa (Comunitarias)",
         "p2": "Elige 2 cartas:", "p5": "Elige hasta 5 cartas:", "sims": "Precisión de cálculo",
         "calc": "🚀 CALCULAR EQUITY", "err": "⚠️ Selecciona exactamente 2 cartas.",
         "w": "🟩 WIN (Ganar)", "l": "🟥 LOSS (Perder)", "t": "🟨 TIE (Empate)",
@@ -59,7 +59,7 @@ T = {
         "m": {"Straight Flush": "Escalera de Color", "Four of a Kind": "Póker", "Full House": "Full House", "Flush": "Color", "Straight": "Escalera", "Three of a Kind": "Trío", "Two Pair": "Doble Par", "Pair": "Par", "High Card": "Carta Alta"}
     },
     "EN": {
-        "title": "🃏 Poker Equity Pro", "ht": "🟩 Your Hand", "bt": "🟦 Board (Community)",
+        "title": "🃏 Poker Pro Calculator", "ht": "🟩 Your Hand", "bt": "🟦 Board (Community)",
         "p2": "Choose 2 cards:", "p5": "Choose up to 5 cards:", "sims": "Calculation precision",
         "calc": "🚀 CALCULATE EQUITY", "err": "⚠️ Select exactly 2 cards.",
         "w": "🟩 WIN", "l": "🟥 LOSS", "t": "🟨 TIE",
@@ -93,14 +93,14 @@ def render_cards(codes):
     return html
 
 st.subheader(T[lang]["ht"])
-mano = st.multiselect(T[lang]["p2"], deck_codes, format_func=fmt_card, max_selections=2)
+mano = st.multiselect(T[lang]["p2"], deck_codes, format_func=fmt_card, max_selections=2, key="mano_sel")
 if mano: st.markdown(render_cards(mano), unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
 st.subheader(T[lang]["bt"])
 opciones_mesa = [c for c in deck_codes if c not in mano]
-mesa = st.multiselect(T[lang]["p5"], opciones_mesa, format_func=fmt_card, max_selections=5)
+mesa = st.multiselect(T[lang]["p5"], opciones_mesa, format_func=fmt_card, max_selections=5, key="mesa_sel")
 if mesa: st.markdown(render_cards(mesa), unsafe_allow_html=True)
 
 if len(mano) == 2 and len(mesa) >= 3:
