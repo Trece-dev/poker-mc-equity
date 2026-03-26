@@ -32,6 +32,7 @@ for v_key, v_val in VALORES.items():
         mazo_completo.append(nombre)
         mapa_codigos[nombre] = codigo
 
+# LA SOLUCIÓN: HTML en una sola línea para evitar que Markdown lo confunda con un bloque de código
 def render_cards(card_list):
     if not card_list: return ""
     html = '<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">'
@@ -39,13 +40,7 @@ def render_cards(card_list):
         rango = c.split()[0]
         palo_emoji = c.split()[1]
         color = "#e61919" if palo_emoji in ["♥️", "♦️"] else "#111111"
-        html += f'''
-        <div style="background-color: white; border-radius: 8px; border: 1px solid #ccc; width: 70px; height: 100px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 5px; box-shadow: 2px 2px 8px rgba(0,0,0,0.3); color: {color}; font-family: Arial, sans-serif; font-weight: bold;">
-            <div style="align-self: flex-start; font-size: 16px; line-height: 1;">{rango}</div>
-            <div style="font-size: 32px; line-height: 1;">{palo_emoji}</div>
-            <div style="align-self: flex-end; font-size: 16px; line-height: 1; transform: rotate(180deg);">{rango}</div>
-        </div>
-        '''
+        html += f'<div style="background-color: white; border-radius: 8px; border: 1px solid #ccc; width: 70px; height: 100px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 5px; box-shadow: 2px 2px 8px rgba(0,0,0,0.3); color: {color}; font-family: Arial, sans-serif; font-weight: bold;"><div style="align-self: flex-start; font-size: 16px; line-height: 1;">{rango}</div><div style="font-size: 32px; line-height: 1;">{palo_emoji}</div><div style="align-self: flex-end; font-size: 16px; line-height: 1; transform: rotate(180deg);">{rango}</div></div>'
     html += '</div>'
     return html
 
