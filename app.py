@@ -20,8 +20,20 @@ st.markdown("""
 st.title("🃏 Poker Equity Pro")
 st.markdown("---")
 
-VALORES = {"A": "A", "K": "K", "Q": "Q", "J": "J", "T": "T", "9": "9", "8": "8", "7": "7", "6": "6", "5": "5", "4": "4", "3": "3", "2": "2"}
+VALORES = {"A": "A", "K": "K", "Q": "Q", "J": "J", "T": "10", "9": "9", "8": "8", "7": "7", "6": "6", "5": "5", "4": "4", "3": "3", "2": "2"}
 PALOS = {"s": "♠️ (Picas)", "h": "♥️ (Corazones)", "d": "♦️ (Diamantes)", "c": "♣️ (Tréboles)"}
+
+TRADUCCION_MANOS = {
+    "Straight Flush": "Escalera de Color",
+    "Four of a Kind": "Póker",
+    "Full House": "Full House",
+    "Flush": "Color",
+    "Straight": "Escalera",
+    "Three of a Kind": "Trío",
+    "Two Pair": "Doble Par",
+    "Pair": "Par",
+    "High Card": "Carta Alta"
+}
 
 mazo_completo = []
 mapa_codigos = {}
@@ -32,7 +44,6 @@ for v_key, v_val in VALORES.items():
         mazo_completo.append(nombre)
         mapa_codigos[nombre] = codigo
 
-# LA SOLUCIÓN: HTML en una sola línea para evitar que Markdown lo confunda con un bloque de código
 def render_cards(card_list):
     if not card_list: return ""
     html = '<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">'
@@ -56,6 +67,19 @@ opciones_mesa = [c for c in mazo_completo if c not in mano_usuario]
 mesa_usuario = st.multiselect("Elige hasta 5 cartas:", opciones_mesa, max_selections=5)
 if mesa_usuario:
     st.markdown(render_cards(mesa_usuario), unsafe_allow_html=True)
+
+if len(mano_usuario) == 2 and len(mesa_usuario) >= 3:
+    try:
+        temp_evaluator = Evaluator()
+        temp_jugador = [Card.new(mapa_codigos[c]) for c in mano_usuario]
+        temp_mesa = [Card.new(mapa_codigos[c]) for c in mesa_usuario]
+        score = temp_evaluator.evaluate(temp_mesa, temp_jugador)
+        hand_class = temp_evaluator.get_rank_class(score)
+        hand_name_eng = temp_evaluator.class_to_string(hand_class)
+        hand_name_esp = TRADUCCION_MANOS.get(hand_name_eng, hand_name_eng)
+        st.success(f"🏆 **Tu jugada actual es:** {hand_name_esp}")
+    except Exception:
+        pass
 
 st.markdown("---")
 simulaciones = st.select_slider("Precisión de cálculo", options=[1000, 2500, 5000, 10000], value=5000)
